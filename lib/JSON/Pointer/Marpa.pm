@@ -1,0 +1,77 @@
+use strict;
+use warnings;
+
+package JSON::Pointer::Marpa;
+
+# Keeping the following $VERSION declaration on a single line is important.
+#<<<
+use version 0.9915; our $VERSION = version->declare( 'v1.0.0' );
+#>>>
+
+use Marpa::R2   ();
+use URI::Escape qw( uri_unescape );
+
+use JSON::Pointer::Marpa::Semantics ();
+
+my $dsl = <<'END_OF_DSL';
+:start ::= pointer
+# Increasing the priority of the array_index lexeme from 0 (the default) to 1
+# avoids parse ambiguity errors of the "ambiguous symch" type
+:lexeme ~ array_index      priority => 1
+# The next array index refers to the (nonexistent) array element after the last
+# array element.
+:lexeme ~ next_array_index priority => 2
+lexeme default = latm  => 1
+
+pointer          ::= pointer_segment*    action => get_state
+pointer_segment  ::= '/' reference_token
+reference_token  ::= next_array_index    action => next_array_index_dereferencing
+                     | array_index       action => array_index_dereferencing
+                     | object_name       action => object_name_dereferencing
+reference_token  ::=                     action => object_name_dereferencing
+object_name      ::= object_name_part+   action => concat
+object_name_part ::= unescaped           action => ::first
+                     | escaped_slash     action => SLASH
+                     | escaped_tilde     action => TILDE
+
+escaped_tilde ~ '~0'
+escaped_slash ~ '~1'
+unescaped     ~ [\x{00}-\x{2E}\x{30}-\x{7D}\x{7F}-\x{10FFFF}]+
+
+array_index      ~ zero | positive digits
+next_array_index ~ '-'
+digits           ~ [\d]*
+positive         ~ [1-9]
+zero             ~ [0]
+END_OF_DSL
+
+my $grammar = Marpa::R2::Scanless::G->new(
+  {
+    source            => \$dsl,
+    trace_file_handle => *STDERR,
+  }
+);
+
+sub get {
+  my ( undef, $json_object, $pointer ) = @_;
+
+  # FIXME: properly differentiate between the 2 different representations
+  # (RFC6901 section 5 and section 6) of a JSON pointer. uri_unescape() has
+  # to be called only(!) for the URI fragment identifier representation type
+  # (section 6). Backslash unescaping has to be done fot the JSON string
+  # representation (section 5) type.
+  $pointer = uri_unescape( $pointer ) if $pointer =~ s/\A#//; ## no critic (RequireExtendedFormatting)
+
+  my $recognizer = Marpa::R2::Scanless::R->new(
+    {
+      grammar => $grammar,
+      #trace_terminals => 1,
+      #trace_values    => 1,
+    }
+  );
+  $recognizer->read( \$pointer );
+
+  return ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_object ) ) };
+}
+
+1;
