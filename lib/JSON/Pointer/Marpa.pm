@@ -40,6 +40,8 @@ object_name_part ::= unescaped           action => ::first
 # Lexical (L0) rules:
 escaped_tilde ~ '~0'
 escaped_slash ~ '~1'
+# Leading zeros in the hexadecimal number representation of the Unicode code
+# point between the curly braces are omitted.
 unescaped     ~ [\x{00}-\x{2E}\x{30}-\x{7D}\x{7F}-\x{10FFFF}]+
 
 array_index      ~ zero | positive digits

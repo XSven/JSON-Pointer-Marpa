@@ -10,6 +10,15 @@ JSON::Pointer::Marpa - Marpa::R2 based JSON Pointer RFC6901 implementation.
 
   my $value = JSON::Pointer::Marpa->get( $json_object, $pointer );
 
+=head1 SYNTAX
+
+ABNF syntax of JSON Pointer
+
+  json-pointer    = *( "/" reference-token )
+  reference-token = *( unescaped / escaped )
+  unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
+  escaped         = "~" ( "0" / "1" ) ; representing '~' and '/', respectively
+
 =head1 SEE ALSO
 
 =over 2
