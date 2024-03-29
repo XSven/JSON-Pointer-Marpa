@@ -14,6 +14,9 @@ use URI::Escape qw( uri_unescape );
 use JSON::Pointer::Marpa::Semantics ();
 
 my $dsl = <<'END_OF_DSL';
+lexeme default = latm  => 1
+
+# Pseudo-rules:
 :start ::= pointer
 # Increasing the priority of the array_index lexeme from 0 (the default) to 1
 # avoids parse ambiguity errors of the "ambiguous symch" type
@@ -21,8 +24,8 @@ my $dsl = <<'END_OF_DSL';
 # The next array index refers to the (nonexistent) array element after the last
 # array element.
 :lexeme ~ next_array_index priority => 2
-lexeme default = latm  => 1
 
+# Structural (G1) rules:
 pointer          ::= pointer_segment*    action => get_state
 pointer_segment  ::= '/' reference_token
 reference_token  ::= next_array_index    action => next_array_index_dereferencing
@@ -34,6 +37,7 @@ object_name_part ::= unescaped           action => ::first
                      | escaped_slash     action => SLASH
                      | escaped_tilde     action => TILDE
 
+# Lexical (L0) rules:
 escaped_tilde ~ '~0'
 escaped_slash ~ '~1'
 unescaped     ~ [\x{00}-\x{2E}\x{30}-\x{7D}\x{7F}-\x{10FFFF}]+
