@@ -21,11 +21,10 @@ on 'runtime' => sub {
 };
 
 on 'test' => sub {
-  requires 'App::Prove'               => '3.17';
-  requires 'Class::Method::Modifiers' => '0';
-  requires 'Test::Fatal'              => '0';
-  requires 'Test::Needs'              => '0';
-  requires 'Test::More'               => '0.47';
+  requires 'JSON::PP'    => '0';
+  requires 'Test::Fatal' => '0';
+  requires 'Test::Needs' => '0';
+  requires 'Test::More'  => '0.47';
 };
 
 on 'develop' => sub {
