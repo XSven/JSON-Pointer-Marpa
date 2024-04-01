@@ -17,5 +17,5 @@ local/
 nytprof.out
 pod2htm*.tmp
 pm_to_blib
-Plack-Middleware-LogAny-*
-Plack-Middleware-LogAny-*.tar.gz
+JSON-Pointer-Marpa-*
+JSON-Pointer-Marpa-*.tar.gz
