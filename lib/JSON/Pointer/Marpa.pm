@@ -24,6 +24,9 @@ lexeme default = latm  => 1
 # The next array index refers to the (nonexistent) array element after the last
 # array element.
 :lexeme ~ next_array_index priority => 2
+:lexeme ~ unescaped
+:lexeme ~ escaped_slash
+:lexeme ~ escaped_tilde
 
 # Structural (G1) rules:
 pointer          ::= pointer_segment*    action => get_state
