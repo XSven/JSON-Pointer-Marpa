@@ -37,7 +37,7 @@ sub array_index_dereferencing {
 sub next_array_index_dereferencing {
   my ( $self ) = @_;
 
-  die( "Handling of '-' array index not implemented!\n" );
+  Marpa::R2::Context::bail( "Handling of '-' array index not implemented!" );
 }
 
 sub object_name_dereferencing {

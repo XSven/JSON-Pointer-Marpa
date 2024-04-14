@@ -37,7 +37,7 @@ my $perl_hashref = decode_json( $json_object );
 
 note explain $perl_hashref;
 
-like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!/, ## no critic (RequireExtendedFormatting)
+like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/, ## no critic (RequireExtendedFormatting)
   'not implemented';
 
 subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
