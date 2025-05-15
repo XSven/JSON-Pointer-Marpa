@@ -67,7 +67,7 @@ sub get {
   # FIXME: properly differentiate between the 2 different representations
   # (RFC6901 section 5 and section 6) of a JSON pointer. uri_unescape() has
   # to be called only(!) for the URI fragment identifier representation type
-  # (section 6). Backslash unescaping has to be done fot the JSON string
+  # (section 6). Backslash unescaping has to be done for the JSON string
   # representation (section 5) type.
   $pointer = uri_unescape( $pointer ) if $pointer =~ s/\A#//; ## no critic (RequireExtendedFormatting)
 

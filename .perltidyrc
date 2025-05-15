@@ -8,4 +8,7 @@
 --continuation-indentation 2
 --cuddled-else
 --static-side-comments
+# https://blogs.perl.org/users/mauke/2010/05/no-semicolon-after-return-values.html
+# No semicolon after return values
+--noadd-semicolons
 --noblanks-before-comments

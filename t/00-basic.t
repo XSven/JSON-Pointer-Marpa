@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT explain is is_deeply like note plan subtest use_ok ) ], tests => 3;
+use Test::More import => [ qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ], tests => 4;
 use Test::Fatal qw( exception );
 
 use JSON::PP    qw( decode_json );
@@ -13,6 +13,23 @@ BEGIN {
   $class = 'JSON::Pointer::Marpa';
   use_ok $class or BAIL_OUT( "Cannot use class '$class'!" );
 }
+
+subtest 'JSON to Perl decode' => sub {
+  plan tests => 7;
+
+  my $json = 'null';
+  is decode_json( $json ), undef, 'null';
+  $json = '["bar", "baz"]';
+  is_deeply decode_json( $json ), [ qw( bar baz ) ], 'array';
+  $json = '{"name": "Alice", "age": 25}';
+  is_deeply decode_json( $json ), { name => 'Alice', age => 25 }, 'object';
+  $json = 'true';
+  isa_ok my $perl = decode_json( $json ), 'JSON::PP::Boolean';
+  ok $perl, 'true';
+  $json = 'false';
+  isa_ok $perl = decode_json( $json ), 'JSON::PP::Boolean';
+  ok not( $perl ), 'false';
+};
 
 # double quotes in JSON have to be escaped with a single backslash: \"
 # backslashes in JSON have to be escaped with a single backslash: \\
