@@ -1,3 +1,6 @@
+# Avoid dist file
+\bJSON-Pointer-Marpa-
+
 # Avoid version control files.
 \bRCS\b
 \bCVS\b
@@ -70,4 +73,3 @@
 \B\.vimrc\b
 
 \blocal\b
-\bREADME.md\b

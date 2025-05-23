@@ -28,7 +28,7 @@ subtest 'JSON to Perl decode' => sub {
   ok $perl, 'true';
   $json = 'false';
   isa_ok $perl = decode_json( $json ), 'JSON::PP::Boolean';
-  ok not( $perl ), 'false';
+  ok not( $perl ), 'false'; ## no critic (RequireTestLabels)
 };
 
 # double quotes in JSON have to be escaped with a single backslash: \"

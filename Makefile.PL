@@ -2,44 +2,51 @@ use strict;
 use warnings;
 
 use Config                        qw( %Config );
+use File::Spec::Functions         qw( catfile );
 use ExtUtils::MakeMaker::CPANfile qw( WriteMakefile );
 
-my %WriteMakefileArgs = (
-  NAME             => 'JSON::Pointer::Marpa',
+my @main_module_namespace = qw( JSON Pointer Marpa );
+my $version               = '1.0.0';
+my $release_status        = 'stable';                   # transition: unstable => testing => stable
+
+my $distname            = join '-',  @main_module_namespace;
+my $main_module         = join '::', @main_module_namespace;
+my $main_module_file    = catfile( @main_module_namespace ) . '.pm';
+my $main_module_podfile = catfile( @main_module_namespace ) . '.pod';
+my %WriteMakefileArgs   = (
+  NAME             => $main_module,
   AUTHOR           => 'Sven Willenbuecher <sven.willenbuecher@gmx.de>',
-  VERSION_FROM     => 'lib/JSON/Pointer/Marpa.pm',
-  ABSTRACT_FROM    => 'lib/JSON/Pointer/Marpa.pod',
+  VERSION_FROM     => catfile( 'lib', $main_module_file ),
+  ABSTRACT_FROM    => catfile( 'lib', $main_module_podfile ),
   LICENSE          => 'Perl_5',
   MIN_PERL_VERSION => '5.14.4',
   META_MERGE       => {
     'meta-spec' => { version => 2 },
     provides    => {
-      'JSON::Pointer::Marpa' => {
-        file    => 'lib/JSON/Pointer/Marpa.pm',
-        version => 'v1.0.0',
+      $main_module => {
+        file    => catfile( 'lib', $main_module_file ),
+        version => $version
       },
-      'JSON::Pointer::Marpa' => {
-        file    => 'lib/JSON/Pointer/Marpa/Semantics.pm',
-      },
+      $main_module => {
+        file => 'lib/JSON/Pointer/Marpa/Semantics.pm',
+      }
     },
     resources => {
       repository => {
         type => 'git',
-        url  => 'git://github.com/XSven/JSON-Pointer-Marpa.git',
-        web  => 'https://github.com/XSven/JSON-Pointer-Marpa',
+        url  => "git://github.com/XSven/$distname.git",
+        web  => "https://github.com/XSven/$distname"
       },
       bugtracker => {
-        web => 'https://github.com/XSven/JSON-Pointer-Marpa/issues',
-      },
-    },
+        web => "https://github.com/XSven/$distname/issues"
+      }
+    }
   },
-  clean     => { FILES                => 'JSON-Pointer-Marpa-* cover_db' },
-  dist      => { COMPRESS             => 'gzip -9f', SUFFIX => 'gz', },
+  clean     => { FILES                => "$distname* cover_db" },
+  dist      => { TARFLAGS             => 'cf', COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
   realclean => { FILES                => 'local' },
-  test      => { RECURSIVE_TEST_FILES => 1 },
+  test      => { RECURSIVE_TEST_FILES => 1 }
 );
 
-require './maint/AuthorExtensions.pl'
-unless ( $Config{ osname } =~ m/\A(?:freebsd|openbsd|solaris)\z/ or exists( $ENV{ MAKELEVEL } ) );
-
-WriteMakefile( %WriteMakefileArgs );
+no warnings qw( void );
+caller() ? \%WriteMakefileArgs : WriteMakefile( %WriteMakefileArgs )
