@@ -37,6 +37,8 @@ sub array_index_dereferencing {
 sub next_array_index_dereferencing {
   my ( $self ) = @_;
 
+  $DB::single=1;
+  # $self->get_state returns an ARRAY reference
   Marpa::R2::Context::bail( "Handling of '-' array index not implemented!" );
 }
 
