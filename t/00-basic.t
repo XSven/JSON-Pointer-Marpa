@@ -11,24 +11,24 @@ my $class;
 
 BEGIN {
   $class = 'JSON::Pointer::Marpa';
-  use_ok $class or BAIL_OUT( "Cannot use class '$class'!" );
+  use_ok $class or BAIL_OUT "Cannot load class '$class'!";
 }
 
 subtest 'JSON to Perl decode' => sub {
   plan tests => 7;
 
-  my $json = 'null';
-  is decode_json( $json ), undef, 'null';
-  $json = '["bar", "baz"]';
-  is_deeply decode_json( $json ), [ qw( bar baz ) ], 'array';
-  $json = '{"name": "Alice", "age": 25}';
-  is_deeply decode_json( $json ), { name => 'Alice', age => 25 }, 'object';
-  $json = 'true';
-  isa_ok my $perl = decode_json( $json ), 'JSON::PP::Boolean';
-  ok $perl, 'true';
-  $json = 'false';
-  isa_ok $perl = decode_json( $json ), 'JSON::PP::Boolean';
-  ok not( $perl ), 'false'; ## no critic (RequireTestLabels)
+  my $json_document = '{"name": "Alice", "age": 25}';
+  is_deeply decode_json( $json_document ), { name => 'Alice', age => 25 }, 'object';
+  $json_document = '["bar", "baz"]';
+  is_deeply decode_json( $json_document ), [ qw( bar baz ) ], 'array';
+  $json_document = 'null';
+  is decode_json( $json_document ), undef, 'null';
+  $json_document = 'true';
+  isa_ok my $perl_document = decode_json( $json_document ), 'JSON::PP::Boolean';
+  ok $perl_document, 'true';
+  $json_document = 'false';
+  isa_ok $perl_document = decode_json( $json_document ), 'JSON::PP::Boolean';
+  ok not( $perl_document ), 'false'; ## no critic (RequireTestLabels)
 };
 
 # double quotes in JSON have to be escaped with a single backslash: \"

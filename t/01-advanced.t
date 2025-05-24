@@ -7,7 +7,7 @@ my $class;
 
 BEGIN {
   $class = 'JSON::Pointer::Marpa';
-  use_ok $class or BAIL_OUT( "Cannot use class '$class'!" );
+  use_ok $class or BAIL_OUT "Cannot load class '$class'!";
 }
 
 # "get" (hash)

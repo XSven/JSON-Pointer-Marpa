@@ -8,8 +8,9 @@ JSON::Pointer::Marpa - Marpa::R2 based JSON Pointer RFC6901 implementation.
 
   use JSON::Pointer::Marpa ();
 
-  # $json_object, $pointer, and $value refer to Perl data types/structures
-  my $value = JSON::Pointer::Marpa->get( $json_object, $pointer );
+  # $json_document, $json_pointer, and $json_value refer to Perl data
+  # types/structures
+  my $json_value = JSON::Pointer::Marpa->get( $json_document, $json_pointer );
 
 =head1 SYNTAX
 
