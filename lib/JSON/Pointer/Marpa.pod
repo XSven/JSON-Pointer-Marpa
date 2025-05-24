@@ -8,8 +8,8 @@ JSON::Pointer::Marpa - Marpa::R2 based JSON Pointer RFC6901 implementation.
 
   use JSON::Pointer::Marpa ();
 
-  # $json_document, $json_pointer, and $json_value refer to Perl data
-  # types/structures
+  # $json_document, $json_pointer, and $json_value refer to
+  # Perl (JSON decoded) values
   my $json_value = JSON::Pointer::Marpa->get( $json_document, $json_pointer );
 
 =head1 SYNTAX
@@ -25,6 +25,10 @@ ABNF syntax of JSON Pointer
 =head1 SEE ALSO
 
 =over 2
+
+=item *
+
+Augmented BNF for Syntax Specifications [L<RFC5234|https://www.rfc-editor.org/rfc/rfc5234>]
 
 =item  *
 
