@@ -14,6 +14,7 @@ on 'configure' => sub {
 on 'runtime' => sub {
   requires 'Marpa::R2'   => '0';
   requires 'URI::Escape' => '0';
+  requires 'constant'    => '0';
   requires 'strict'      => '0';
   requires 'version'     => '0.9915';
   requires 'warnings'    => '0';

@@ -27,7 +27,7 @@ my %WriteMakefileArgs   = (
         file    => catfile( 'lib', $main_module_file ),
         version => $version
       },
-      $main_module => {
+      join( '::', $main_module, 'Semantics' ) => {
         file => 'lib/JSON/Pointer/Marpa/Semantics.pm',
       }
     },

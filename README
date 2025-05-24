@@ -17,6 +17,18 @@ After the installation, you can find further documentation using the command:
 
   perldoc JSON::Pointer::Marpa
 
+MAINTENANCE
+
+To maintain this module, run the following commands:
+
+  perl Makefile.PL
+  make
+  cover -delete
+  HARNESS_PERL_SWITCHES=-MDevel::Cover make test
+  cover -report vim
+  make RELEASE_TESTING=1 disttest
+  make dist
+
 COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2025 by Sven Willenbuecher.
