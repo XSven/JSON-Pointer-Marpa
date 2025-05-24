@@ -33,6 +33,14 @@ JSON Pointer [L<RFC6901|https://www.rfc-editor.org/rfc/rfc6901>]
 
 Uniform Resource Identifier [L<RFC3986|https://www.rfc-editor.org/rfc/rfc3986>]
 
+=item *
+
+L<Marpa::R2>
+
+=item *
+
+L<JSON::Pointer>
+
 =back
 
 =head1 AUTHOR
@@ -41,7 +49,7 @@ Sven Willenbuecher <sven.willenbuecher@gmx.de>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2024 by Sven Willenbuecher.
+This software is copyright (c) 2025 by Sven Willenbuecher.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
