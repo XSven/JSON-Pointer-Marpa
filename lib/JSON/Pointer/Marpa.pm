@@ -29,7 +29,7 @@ lexeme default = latm  => 1
 :lexeme ~ escaped_tilde
 
 # Structural (G1) rules:
-pointer          ::= pointer_segment*    action => get_state
+pointer          ::= pointer_segment*    action => get_currently_referenced_value
 pointer_segment  ::= '/' reference_token
 reference_token  ::= next_array_index    action => next_array_index_dereferencing
                      | array_index       action => array_index_dereferencing
