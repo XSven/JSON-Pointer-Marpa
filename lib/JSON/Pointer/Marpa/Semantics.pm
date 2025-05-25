@@ -25,11 +25,13 @@ sub concat {
 sub array_index_dereferencing {
   my ( $self, $index ) = @_;
 
-  return unless defined $self->get_currently_referenced_value;
+  my $currently_referenced_value = $self->get_currently_referenced_value;
 
-  ref $self->get_currently_referenced_value eq 'HASH'
-    ? $self->set_currently_referenced_value( $self->get_currently_referenced_value->{ $index } )
-    : $self->set_currently_referenced_value( $self->get_currently_referenced_value->[ $index ] );
+  return unless defined $currently_referenced_value;
+
+  ref $currently_referenced_value eq 'HASH'
+    ? $self->set_currently_referenced_value( $currently_referenced_value->{ $index } )
+    : $self->set_currently_referenced_value( $currently_referenced_value->[ $index ] );
 
   return;
 }
@@ -37,9 +39,10 @@ sub array_index_dereferencing {
 sub next_array_index_dereferencing {
   my ( $self, $next_index ) = @_;
 
-  ref $self->get_currently_referenced_value eq 'ARRAY'
+  my $currently_referenced_value = $self->get_currently_referenced_value;
+  ref $currently_referenced_value eq 'ARRAY'
     ? Marpa::R2::Context::bail( "Handling of '$next_index' array index not implemented!" )
-    : $self->set_currently_referenced_value( $self->get_currently_referenced_value->{ $next_index } );
+    : $self->set_currently_referenced_value( $currently_referenced_value->{ $next_index } );
 
   return;
 }
@@ -49,7 +52,10 @@ sub object_name_dereferencing {
 
   return unless defined $self->get_currently_referenced_value;
 
-  $self->set_currently_referenced_value( $self->get_currently_referenced_value->{ $name // '' } );
+  my $currently_referenced_value = $self->get_currently_referenced_value;
+  Marpa::R2::Context::bail( "Currently referenced value isn't a HASH reference!" )
+    unless ref $currently_referenced_value eq 'HASH';
+  $self->set_currently_referenced_value( $currently_referenced_value->{ $name // '' } );
 
   return;
 }

@@ -1,6 +1,7 @@
 Release history for JSON-Pointer-Marpa
 
-         2025-05-25
+1.0.1    2025-05-25
+         - fix error handling [RFC6901/7. Error Handling]
          - fix initial release date in changes file
 
 1.0.0    2025-05-25

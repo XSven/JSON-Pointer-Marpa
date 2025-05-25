@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ], tests => 4;
+use Test::More import => [ qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ], tests => 5;
 use Test::Fatal qw( exception );
 
 use JSON::PP    qw( decode_json );
@@ -53,6 +53,9 @@ note explain $json_object;
 my $perl_hashref = decode_json( $json_object );
 
 note explain $perl_hashref;
+
+like exception { $class->get( $perl_hashref, '/foo/string' ) }, qr/Currently referenced value isn't a HASH reference!/,
+  'array is referenced with a non-numeric token';
 
 like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/, ## no critic (RequireExtendedFormatting)
   'not implemented';
