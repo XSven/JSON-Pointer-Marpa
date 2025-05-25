@@ -1,4 +1,7 @@
 Release history for JSON-Pointer-Marpa
 
-1.0.0    2025-05-24
+         2025-05-25
+         - fix initial release date in changes file
+
+1.0.0    2025-05-25
          - initial release
