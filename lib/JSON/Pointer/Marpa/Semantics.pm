@@ -35,11 +35,13 @@ sub array_index_dereferencing {
 }
 
 sub next_array_index_dereferencing {
-  my ( $self ) = @_;
+  my ( $self, $next_index ) = @_;
 
-  $DB::single=1;
-  # $self->get_state returns an ARRAY reference
-  Marpa::R2::Context::bail( "Handling of '-' array index not implemented!" );
+  ref $self->get_state eq 'ARRAY'
+    ? Marpa::R2::Context::bail( "Handling of '$next_index' array index not implemented!" )
+    : $self->set_state( $self->get_state->{ $next_index } );
+
+  return;
 }
 
 sub object_name_dereferencing {

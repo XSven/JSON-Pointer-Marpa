@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT is is_deeply use_ok ) ], tests => 19;
+use Test::More import => [ qw( BAIL_OUT is is_deeply use_ok ) ], tests => 20;
 
 my $class;
 
@@ -15,6 +15,10 @@ is_deeply $class->get( { foo => 'bar' }, '' ), { foo => 'bar' }, "'' is '{ foo =
 is $class->get( { foo => 'bar' }, '/foo' ), 'bar', "'/foo' is 'bar'";
 is $class->get( { foo => { bar => 42 } }, '/foo/bar' ), 42, "'/foo/bar' is '42'";
 is_deeply $class->get( { foo => { 23 => { baz => 0 } } }, '/foo/23' ), { baz => 0 }, "'/foo/23' is '{ baz => 0 }'";
+is_deeply $class->get(
+  { operator => { '-' => { name => 'minus', type => 'number' }, '.' => { name => 'concat', type => 'string' } } },
+  '/operator/-' ),
+  { name => 'minus', 'type' => 'number' }, "'/operator/-' is '{ name => 'minus', type => 'number' }'";
 
 # "get" (mixed)
 is_deeply $class->get( { foo => { bar => [ 1, 2, 3 ] } }, '/foo/bar' ), [ 1, 2, 3 ], "'/foo/bar' is '[ 1, 2, 3 ]'";
