@@ -53,7 +53,7 @@ sub object_name_dereferencing {
   return unless defined $self->get_currently_referenced_value;
 
   my $currently_referenced_value = $self->get_currently_referenced_value;
-  Marpa::R2::Context::bail( "Currently referenced value isn't a HASH reference!" )
+  Marpa::R2::Context::bail( "Currently referenced value $currently_referenced_value isn't a JSON object member!" )
     unless ref $currently_referenced_value eq 'HASH';
   $self->set_currently_referenced_value( $currently_referenced_value->{ $name // '' } );
 

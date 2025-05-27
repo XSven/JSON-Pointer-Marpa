@@ -56,7 +56,7 @@ my $perl_hashref = $json_pp->decode( $json_object );
 
 note explain $perl_hashref;
 
-like exception { $class->get( $perl_hashref, '/foo/string' ) }, qr/Currently referenced value isn't a HASH reference!/,
+like exception { $class->get( $perl_hashref, '/foo/string' ) }, qr/Currently referenced value .* isn't a JSON object member!/,
   'array is referenced with a non-numeric token';
 
 like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/, ## no critic (RequireExtendedFormatting)
