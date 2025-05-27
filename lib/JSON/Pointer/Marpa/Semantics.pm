@@ -29,9 +29,15 @@ sub array_index_dereferencing {
 
   return unless defined $currently_referenced_value;
 
-  ref $currently_referenced_value eq 'HASH'
-    ? $self->set_currently_referenced_value( $currently_referenced_value->{ $index } )
-    : $self->set_currently_referenced_value( $currently_referenced_value->[ $index ] );
+  my $type_of_currently_referenced_value = ref $currently_referenced_value;
+  if ( $type_of_currently_referenced_value eq 'HASH' ) {
+    $self->set_currently_referenced_value( $currently_referenced_value->{ $index } )
+  } elsif ( $type_of_currently_referenced_value eq 'ARRAY' ) {
+    Marpa::R2::Context::bail(
+      "JSON array has been accessed with an index $index that is greater than or equal to the size of the array!" )
+      if $index >= @$currently_referenced_value;
+    $self->set_currently_referenced_value( $currently_referenced_value->[ $index ] );
+  }
 
   return;
 }
