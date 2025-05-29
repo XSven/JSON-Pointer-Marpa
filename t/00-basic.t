@@ -57,15 +57,23 @@ my $perl_hashref = $json_pp->decode( $json_object );
 note explain $perl_hashref;
 
 subtest 'Error handling described in section 7' => sub {
-  plan tests => 3;
+  plan tests => 5;
 
   like exception { $class->get( $perl_hashref, '/foo/string' ) },
     qr/Currently referenced value .* isn't a JSON object member!\n\z/, ## no critic (ProhibitComplexRegexes)
-    'array is referenced with a non-numeric token';
+    'array is referenced with a non-numeric token that not even refers to an object member';
+
+  like exception { $class->get( $perl_hashref, '/a~1b/666' ) },
+    qr/Currently referenced value .* isn't a JSON object member!\n\z/,
+    'value is referenced with a numeric token';
 
   like exception { $class->get( $perl_hashref, '/foo/2' ) },
     qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/, ## no critic (ProhibitComplexRegexes)
     'array index out of bounds';
+
+  like exception { $class->get( $perl_hashref, '/47' ) },
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
+    'object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/, ## no critic (RequireExtendedFormatting)
     'not implemented';
