@@ -12,9 +12,9 @@ use constant { ## no critic (ProhibitConstantPragma)
 # This is a rule evaluation closure of a quantified rule
 # https://metacpan.org/pod/distribution/Marpa-R2/pod/Semantics.pod#Quantified-rule-nodes
 sub new {
-  my ( $class, $currently_referenced_value ) = @_;
+  my ( $class, $crv ) = @_;    # crv == currently referenced value
 
-  return bless { currently_referenced_value => $currently_referenced_value }, $class;
+  return bless { crv => $crv }, $class;
 }
 
 sub concat {
@@ -25,18 +25,18 @@ sub concat {
 sub array_index_dereferencing {
   my ( $self, $index ) = @_;
 
-  my $currently_referenced_value = $self->get_currently_referenced_value;
+  my $crv = $self->get_crv;
 
-  return unless defined $currently_referenced_value;
+  return unless defined $crv;
 
-  my $type_of_currently_referenced_value = ref $currently_referenced_value;
-  if ( $type_of_currently_referenced_value eq 'HASH' ) {
-    $self->set_currently_referenced_value( $currently_referenced_value->{ $index } )
-  } elsif ( $type_of_currently_referenced_value eq 'ARRAY' ) {
+  my $type_of_crv = ref $crv;
+  if ( $type_of_crv eq 'HASH' ) {
+    $self->set_crv( $crv->{ $index } )
+  } elsif ( $type_of_crv eq 'ARRAY' ) {
     Marpa::R2::Context::bail(
       "JSON array has been accessed with an index $index that is greater than or equal to the size of the array!" )
-      if $index >= @$currently_referenced_value;
-    $self->set_currently_referenced_value( $currently_referenced_value->[ $index ] );
+      if $index >= @$crv;
+    $self->set_crv( $crv->[ $index ] );
   }
 
   return;
@@ -45,10 +45,10 @@ sub array_index_dereferencing {
 sub next_array_index_dereferencing {
   my ( $self, $next_index ) = @_;
 
-  my $currently_referenced_value = $self->get_currently_referenced_value;
-  ref $currently_referenced_value eq 'ARRAY'
+  my $crv = $self->get_crv;
+  ref $crv eq 'ARRAY'
     ? Marpa::R2::Context::bail( "Handling of '$next_index' array index not implemented!" )
-    : $self->set_currently_referenced_value( $currently_referenced_value->{ $next_index } );
+    : $self->set_crv( $crv->{ $next_index } );
 
   return;
 }
@@ -56,28 +56,28 @@ sub next_array_index_dereferencing {
 sub object_name_dereferencing {
   my ( $self, $name ) = @_;
 
-  return unless defined $self->get_currently_referenced_value;
+  return unless defined $self->get_crv;
 
-  my $currently_referenced_value = $self->get_currently_referenced_value;
-  Marpa::R2::Context::bail( "Currently referenced value $currently_referenced_value isn't a JSON object member!" )
-    unless ref $currently_referenced_value eq 'HASH';
-  $self->set_currently_referenced_value( $currently_referenced_value->{ $name // '' } );
-
-  return;
-}
-
-sub set_currently_referenced_value {
-  my ( $self, $currently_referenced_value ) = @_;
-
-  $self->{ currently_referenced_value } = $currently_referenced_value;
+  my $crv = $self->get_crv;
+  Marpa::R2::Context::bail( "Currently referenced value $crv isn't a JSON object member!" )
+    unless ref $crv eq 'HASH';
+  $self->set_crv( $crv->{ $name // '' } );
 
   return;
 }
 
-sub get_currently_referenced_value {
+sub set_crv {
+  my ( $self, $crv ) = @_;
+
+  $self->{ crv } = $crv;
+
+  return;
+}
+
+sub get_crv {
   my ( $self ) = @_;
 
-  return $self->{ currently_referenced_value };
+  return $self->{ crv };
 }
 
 1;
