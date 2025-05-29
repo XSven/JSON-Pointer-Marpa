@@ -37,4 +37,4 @@ is $class->get( [ { 'foo/bar/baz' => 'yada' } ], '/0/foo~1bar~1baz' ),       'ya
 is $class->get( [ { 'foo~/bar'    => 'bar' } ],  '/0/foo~0~1bar' ),          'bar',  "'/0/foo~0~1bar' is 'bar'";
 is $class->get( [ { 'foo~/bar'    => 'bar' } ],  '#/0/foo%7E%30%7E%31bar' ), 'bar', "'#/0/foo%7E%30%7E%31bar' is 'bar'";
 is $class->get( [ { 'f~o~o~/b~'   => { 'a~' => { 'r' => 'baz' } } } ] => '/0/f~0o~0o~0~1b~0/a~0/r' ),
-  'baz', "'/0/f~0o~0o~0~1b~0/a~0/r' is 'baz'";
+  'baz', "'/0/f~0o~0o~0~1b~0/a~0/r' is 'baz'"

@@ -1,3 +1,5 @@
+## no critic (ProhibitComplexRegexes)
+
 use strict;
 use warnings;
 
@@ -30,7 +32,7 @@ subtest 'JSON to Perl decode' => sub {
   ok $perl_document, 'true';
   $json_document = 'false';
   isa_ok $perl_document = $json_pp->decode( $json_document ), 'JSON::PP::Boolean';
-  ok not( $perl_document ), 'false'; ## no critic (RequireTestLabels)
+  ok not( $perl_document ), 'false' ## no critic (RequireTestLabels)
 };
 
 # double quotes in JSON have to be escaped with a single backslash: \"
@@ -60,7 +62,7 @@ subtest 'Error handling described in section 7' => sub {
   plan tests => 5;
 
   like exception { $class->get( $perl_hashref, '/foo/string' ) },
-    qr/Currently referenced value .* isn't a JSON object member!\n\z/, ## no critic (ProhibitComplexRegexes)
+    qr/Currently referenced value .* isn't a JSON object member!\n\z/,
     'array is referenced with a non-numeric token that not even refers to an object member';
 
   like exception { $class->get( $perl_hashref, '/a~1b/666' ) },
@@ -68,15 +70,15 @@ subtest 'Error handling described in section 7' => sub {
     'value is referenced with a numeric token';
 
   like exception { $class->get( $perl_hashref, '/foo/2' ) },
-    qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/, ## no critic (ProhibitComplexRegexes)
+    qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
     'array index out of bounds';
 
   like exception { $class->get( $perl_hashref, '/47' ) },
-    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
     'object member does not exist';
 
-  like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/, ## no critic (RequireExtendedFormatting)
-    'not implemented';
+  like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/,
+    'not implemented'
 };
 
 subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
@@ -148,5 +150,5 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
   is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref->{ ' ' }, $perl_string;
 
   $perl_string = '/m~01n';
-  is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref->{ 'm~1n' }, $perl_string;
-};
+  is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref->{ 'm~1n' }, $perl_string
+}

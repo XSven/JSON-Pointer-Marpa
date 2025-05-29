@@ -57,7 +57,7 @@ END_OF_DSL
 my $grammar = Marpa::R2::Scanless::G->new(
   {
     source            => \$dsl,
-    trace_file_handle => *STDERR,
+    trace_file_handle => *STDERR
   }
 );
 
@@ -73,14 +73,14 @@ sub get {
 
   my $recognizer = Marpa::R2::Scanless::R->new(
     {
-      grammar => $grammar,
+      grammar => $grammar
       #trace_terminals => 1,
       #trace_values    => 1,
     }
   );
   $recognizer->read( \$json_pointer );
 
-  return ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_document ) ) };
+  ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_document ) ) }
 }
 
-1;
+1

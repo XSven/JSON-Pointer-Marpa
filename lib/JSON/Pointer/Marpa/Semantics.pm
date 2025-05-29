@@ -16,12 +16,12 @@ use constant { ## no critic (ProhibitConstantPragma)
 sub new {
   my ( $class, $crv ) = @_;    # crv == currently referenced value
 
-  return bless { crv => $crv }, $class;
+  bless { crv => $crv }, $class
 }
 
 sub concat {
   shift;
-  return join '', @_;
+  join '', @_
 }
 
 sub array_index_dereferencing {
@@ -30,14 +30,14 @@ sub array_index_dereferencing {
   my $crv         = $self->get_crv;
   my $type_of_crv = ref $crv;
   if ( $type_of_crv eq 'ARRAY' ) {
-    $self->set_crv( _index_exists( $crv, $index ) );
+    $self->set_crv( _index_exists( $crv, $index ) )
   } elsif ( $type_of_crv eq 'HASH' ) {
-    $self->set_crv( _member_exists( $crv, $index ) );
+    $self->set_crv( _member_exists( $crv, $index ) )
   } else {
     Marpa::R2::Context::bail( "Currently referenced value $crv isn't a JSON object member!" )
   }
 
-  return;
+  undef
 }
 
 sub next_array_index_dereferencing {
@@ -48,7 +48,7 @@ sub next_array_index_dereferencing {
     ? Marpa::R2::Context::bail( "Handling of '$next_index' array index not implemented!" )
     : $self->set_crv( $crv->{ $next_index } );
 
-  return;
+  undef
 }
 
 sub object_name_dereferencing {
@@ -60,7 +60,7 @@ sub object_name_dereferencing {
     unless ref $crv eq 'HASH';
   $self->set_crv( $crv->{ $name // '' } );
 
-  return;
+  undef
 }
 
 sub set_crv {
@@ -68,33 +68,30 @@ sub set_crv {
 
   $self->{ crv } = $crv;
 
-  return;
+  undef
 }
 
 sub get_crv {
   my ( $self ) = @_;
 
-  return $self->{ crv };
+  $self->{ crv }
 }
 
 sub _index_exists ($$) {
   my ( $crv, $index ) = @_;
 
-  return (
-    $index < @$crv ? $crv->[ $index ] : Marpa::R2::Context::bail(
-      "JSON array has been accessed with an index $index that is greater than or equal to the size of the array!"
-    )
-  );
+  $index < @$crv
+    ? $crv->[ $index ]
+    : Marpa::R2::Context::bail(
+    "JSON array has been accessed with an index $index that is greater than or equal to the size of the array!" )
 }
 
 sub _member_exists ($$) {
   my ( $crv, $member ) = @_;
 
-  return (
-    exists $crv->{ $member }
+  exists $crv->{ $member }
     ? $crv->{ $member }
     : Marpa::R2::Context::bail( "JSON object has been accessed with a member $member that does not exist!" )
-  );
 }
 
-1;
+1
