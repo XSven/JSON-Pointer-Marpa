@@ -1,7 +1,10 @@
+## no critic (ProhibitComplexRegexes)
+
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT is is_deeply use_ok ) ], tests => 19;
+use Test::More import => [ qw( BAIL_OUT is is_deeply like use_ok ) ], tests => 20;
+use Test::Fatal qw( exception );
 
 my $class;
 
@@ -25,7 +28,9 @@ is_deeply $class->get( { foo => { bar => [ 1, 2, 3 ] } }, '/foo/bar' ), [ 1, 2, 
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/0' ), 0,     "'/foo/bar/0' is '0'";
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/1' ), undef, "'/foo/bar/1' is 'undef'";
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/2' ), 3,     "'/foo/bar/2' is '3'";
-#is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6' ), undef, "'/foo/bar/6' is 'undef'";
+like exception { $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6' ) },
+  qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
+  'array index out of bounds (former implementation has returned undef)';
 
 # "get" (encoded)
 is $class->get( { '♥' => [ 0, 1 ] }, '#/%E2%99%A5/0' ), 0, "'#/%E2%99%A5/0' is '0' (Black Heart Suit)";
