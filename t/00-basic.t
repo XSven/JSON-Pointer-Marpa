@@ -39,16 +39,20 @@ subtest 'JSON to Perl decode' => sub {
 # backslashes in JSON have to be escaped with a single backslash: \\
 my $json_object = <<'JSON_OBJECT';
   {
-   "foo": ["bar", "baz"],
-   "": 0,
-   "a/b": 1,
-   "c%d": 2,
-   "e^f": 3,
-   "g|h": 4,
-   "i\\j": 5,
-   "k\"l": 6,
-   " ": 7,
-   "m~1n": 8
+    "foo": ["bar", "baz"],
+    "": 0,
+    "a/b": 1,
+    "c%d": 2,
+    "e^f": 3,
+    "g|h": 4,
+    "i\\j": 5,
+    "k\"l": 6,
+    " ": 7,
+    "m~1n": 8,
+    "qux": {
+      "corge": "grault",
+      "thud": "fred"
+    }
   }
 JSON_OBJECT
 
@@ -59,7 +63,7 @@ my $perl_hashref = $json_pp->decode( $json_object );
 note explain $perl_hashref;
 
 subtest 'Error handling described in section 7' => sub {
-  plan tests => 5;
+  plan tests => 6;
 
   like exception { $class->get( $perl_hashref, '/foo/string' ) },
     qr/Currently referenced value .* isn't a JSON object member!\n\z/,
@@ -77,6 +81,10 @@ subtest 'Error handling described in section 7' => sub {
     qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
     'object member does not exist';
 
+  like exception { $class->get( $perl_hashref, '/qux/' ) },
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
+    'object member does not exist';
+ 
   like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/,
     'not implemented'
 };

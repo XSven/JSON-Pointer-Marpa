@@ -52,13 +52,14 @@ sub next_array_index_dereferencing {
 }
 
 sub object_name_dereferencing {
-  my ( $self, $name ) = @_;
+  my ( $self, $member ) = @_;
+  $member = '' if @_ == 1;
 
   my $crv = $self->get_crv;
   return unless defined $crv;
   Marpa::R2::Context::bail( "Currently referenced value $crv isn't a JSON object member!" )
     unless ref $crv eq 'HASH';
-  $self->set_crv( $crv->{ $name // '' } );
+  $self->set_crv( _member_exists( $crv, $member ) );
 
   undef
 }
@@ -91,7 +92,7 @@ sub _member_exists ($$) {
 
   exists $crv->{ $member }
     ? $crv->{ $member }
-    : Marpa::R2::Context::bail( "JSON object has been accessed with a member $member that does not exist!" )
+    : Marpa::R2::Context::bail( "JSON object has been accessed with a member '$member' that does not exist!" )
 }
 
 1

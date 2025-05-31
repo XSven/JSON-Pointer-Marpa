@@ -34,9 +34,11 @@ like exception { $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6
 
 # "get" (encoded)
 is $class->get( { '♥' => [ 0, 1 ] }, '#/%E2%99%A5/0' ), 0, "'#/%E2%99%A5/0' is '0' (Black Heart Suit)";
-is $class->get( [ { '^foob ar'    => 'foo' } ],  '/0/^foob ar' ),            'foo',  "'/0/^foob ar' is 'foo'";
-is $class->get( [ { 'foob ar'     => 'foo' } ],  '#/0/foob%20ar' ),          'foo',  "'#/0/foob%20ar' is 'foo'";
-is $class->get( [ { 'foo/bar'     => 'bar' } ],  '#/0/foo%2Fbar' ),          undef,  "'/0/foo%2Fbar' is 'undef'";
+is $class->get( [ { '^foob ar' => 'foo' } ], '/0/^foob ar' ),   'foo', "'/0/^foob ar' is 'foo'";
+is $class->get( [ { 'foob ar'  => 'foo' } ], '#/0/foob%20ar' ), 'foo', "'#/0/foob%20ar' is 'foo'";
+like exception { $class->get( [ { 'foo/bar' => 'bar' } ], '#/0/foo%2Fbar' ) },
+  qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
+  'object member does not exist (former implementation has returned undef)';
 is $class->get( [ { 'foo/bar'     => 'bar' } ],  '/0/foo~1bar' ),            'bar',  "'/0/foo~1bar' is 'bar'";
 is $class->get( [ { 'foo/bar/baz' => 'yada' } ], '/0/foo~1bar~1baz' ),       'yada', "'/0/foo~1bar~1baz' is 'yada'";
 is $class->get( [ { 'foo~/bar'    => 'bar' } ],  '/0/foo~0~1bar' ),          'bar',  "'/0/foo~0~1bar' is 'bar'";
