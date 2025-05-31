@@ -27,11 +27,11 @@ sub concat {
 sub array_index_dereferencing {
   my ( $self, $index ) = @_;
 
-  my $crv         = $self->get_crv;
-  my $type_of_crv = ref $crv;
-  if ( $type_of_crv eq 'ARRAY' ) {
+  my $crv = $self->get_crv;
+  my $crt = ref $crv;         # crt == currently referenced type
+  if ( $crt eq 'ARRAY' ) {
     $self->set_crv( _index_exists( $crv, $index ) )
-  } elsif ( $type_of_crv eq 'HASH' ) {
+  } elsif ( $crt eq 'HASH' ) {
     $self->set_crv( _member_exists( $crv, $index ) )
   } else {
     Marpa::R2::Context::bail( "Currently referenced value $crv isn't a JSON object member!" )
