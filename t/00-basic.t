@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ], tests => 4;
+use Test::More import => [ qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ], tests => 5;
 use Test::Fatal qw( exception );
 
 use JSON::PP    ();
@@ -21,6 +21,8 @@ my $json_pp = JSON::PP->new->utf8->allow_nonref( 1 );
 subtest 'JSON to Perl decode' => sub {
   plan tests => 7;
 
+  # JSON can represent four primitive types (strings, numbers, booleans,
+  # and null) and two structured types (objects and arrays).
   my $json_document = '{"name": "Alice", "age": 25}';
   is_deeply $json_pp->decode( $json_document ), { name => 'Alice', age => 25 }, 'object';
   $json_document = '["bar", "baz"]';
@@ -28,6 +30,7 @@ subtest 'JSON to Perl decode' => sub {
   $json_document = 'null';
   is $json_pp->decode( $json_document ), undef, 'null';
   $json_document = 'true';
+  # https://metacpan.org/dist/Types-Bool/view/lib/Types/Bool.pod#DESCRIPTION
   isa_ok my $perl_document = $json_pp->decode( $json_document ), 'JSON::PP::Boolean';
   ok $perl_document, 'true';
   $json_document = 'false';
@@ -52,6 +55,10 @@ my $json_object = <<'JSON_OBJECT';
     "qux": {
       "corge": "grault",
       "thud": "fred"
+    },
+    "boolean": {
+       "updated": true,
+       "paid": false
     }
   }
 JSON_OBJECT
@@ -83,8 +90,8 @@ subtest 'Error handling described in section 7' => sub {
 
   like exception { $class->get( $perl_hashref, '/qux/' ) },
     qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
-    'object member does not exist';
- 
+    'empty string object member does not exist';
+
   like exception { $class->get( $perl_hashref, '/foo/-' ) }, qr/Handling of '-' array index not implemented!\n\z/,
     'not implemented'
 };
@@ -159,4 +166,17 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
 
   $perl_string = '/m~01n';
   is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref->{ 'm~1n' }, $perl_string
+};
+
+subtest 'Pointing to JSON primitives' => sub {
+  plan tests => 4;
+
+  my $json_string = '"/boolean/updated"';
+  my $perl_string = $json_pp->decode( $json_string );
+  isa_ok my $perl_boolean = $class->get( $perl_hashref, $perl_string ), 'JSON::PP::Boolean';
+  ok $perl_boolean, 'is true';
+  $json_string = '"/boolean/paid"';
+  $perl_string = $json_pp->decode( $json_string );
+  isa_ok $perl_boolean = $class->get( $perl_hashref, $perl_string ), 'JSON::PP::Boolean';
+  ok !$perl_boolean, 'is false'
 }
