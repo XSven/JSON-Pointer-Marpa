@@ -59,7 +59,8 @@ my $json_object = <<'JSON_OBJECT';
     "boolean": {
        "updated": true,
        "paid": false
-    }
+    },
+    "unknown": null
   }
 JSON_OBJECT
 
@@ -168,15 +169,18 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
   is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref->{ 'm~1n' }, $perl_string
 };
 
-subtest 'Pointing to JSON primitives' => sub {
-  plan tests => 4;
+subtest 'Point to JSON primitives' => sub {
+  plan tests => 5;
 
   my $json_string = '"/boolean/updated"';
   my $perl_string = $json_pp->decode( $json_string );
   isa_ok my $perl_boolean = $class->get( $perl_hashref, $perl_string ), 'JSON::PP::Boolean';
-  ok $perl_boolean, 'is true';
+  ok $perl_boolean, 'true';
   $json_string = '"/boolean/paid"';
   $perl_string = $json_pp->decode( $json_string );
   isa_ok $perl_boolean = $class->get( $perl_hashref, $perl_string ), 'JSON::PP::Boolean';
-  ok !$perl_boolean, 'is false'
+  ok not( $perl_boolean ), 'false'; ## no critic (RequireTestLabels)
+  $json_string = '"/unknown"';
+  $perl_string = $json_pp->decode( $json_string );
+  ok not( defined $class->get( $perl_hashref, $perl_string ) ), 'null' ## no critic (RequireTestLabels)
 }
