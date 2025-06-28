@@ -41,6 +41,11 @@ error conditions is raised:
 
 =back
 
+Other CPAN implementations do not stop processing but return C<undef> for
+some of these error conditions. This approach is questionable because it
+does not allow to differentiate a true JSON C<null> value (Perl C<undef>
+value) from an error condition anymore.
+
 =head1 SEE ALSO
 
 =over 2
@@ -49,7 +54,11 @@ error conditions is raised:
 
 Augmented BNF for Syntax Specifications [L<RFC5234|https://www.rfc-editor.org/rfc/rfc5234>]
 
-=item  *
+=item *
+
+JSON [L<RFC8259|https://www.rfc-editor.org/rfc/rfc8259>]
+
+=item *
 
 JSON Pointer [L<RFC6901|https://www.rfc-editor.org/rfc/rfc6901>]
 
@@ -64,6 +73,10 @@ L<Marpa::R2>
 =item *
 
 L<JSON::Pointer>
+
+=item *
+
+L<Mojo::JSON::Pointer>
 
 =back
 
