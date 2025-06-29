@@ -56,8 +56,7 @@ sub object_name_dereferencing {
   $member = '' if @_ == 1;
 
   my $crv = $self->get_crv;
-  return unless defined $crv;
-  my $crt = ref $crv;    # crt == currently referenced type
+  my $crt = ref $crv;         # crt == currently referenced type
   Marpa::R2::Context::bail( "Currently referenced type '$crt' isn't a JSON object!" )
     unless $crt eq 'HASH';
   $self->set_crv( _member_exists( $crv, $member ) );

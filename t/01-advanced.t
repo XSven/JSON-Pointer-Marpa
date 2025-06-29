@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More import => [ qw( BAIL_OUT is is_deeply like use_ok ) ], tests => 20;
+use Test::More import => [ qw( BAIL_OUT is is_deeply like use_ok ) ], tests => 21;
 use Test::Fatal qw( exception );
 
 my $class;
@@ -28,6 +28,8 @@ is_deeply $class->get( { foo => { bar => [ 1, 2, 3 ] } }, '/foo/bar' ), [ 1, 2, 
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/0' ), 0,     "'/foo/bar/0' is '0'";
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/1' ), undef, "'/foo/bar/1' is 'undef'";
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/2' ), 3,     "'/foo/bar/2' is '3'";
+like exception { $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/1/baz' ) },
+  qr/Currently referenced type '' isn't a JSON object!\n\z/, 'undef is referenced with a non-numeric token';
 like exception { $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6' ) },
   qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
   'array index out of bounds (former implementation has returned undef)';
