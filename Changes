@@ -1,6 +1,6 @@
 Release history for JSON-Pointer-Marpa
 
-1.0.1    2025-06-22
+1.0.1    2025-06-29
          - fix error handling [RFC6901/7. Error Handling]
          - explicitly enable JSON::PP allow_nonref option
          - fix initial release date in changes file
