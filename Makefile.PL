@@ -19,7 +19,7 @@ my %WriteMakefileArgs   = (
   VERSION_FROM     => catfile( 'lib', $main_module_file ),
   ABSTRACT_FROM    => catfile( 'lib', $main_module_podfile ),
   LICENSE          => 'Perl_5',
-  MIN_PERL_VERSION => '5.14.4',
+  MIN_PERL_VERSION => '5.10.1',
   META_MERGE       => {
     'meta-spec' => { version => 2 },
     provides    => {
