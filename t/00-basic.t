@@ -41,30 +41,30 @@ subtest 'JSON to Perl decode' => sub {
 # double quotes in JSON have to be escaped with a single backslash: \"
 # backslashes in JSON have to be escaped with a single backslash: \\
 my $json_object = <<'JSON_OBJECT';
-  {
-    "foo": ["bar", "baz"],
-    "": 0,
-    "a/b": 1,
-    "c%d": 2,
-    "e^f": 3,
-    "g|h": 4,
-    "i\\j": 5,
-    "k\"l": 6,
-    " ": 7,
-    "m~1n": 8,
-    "qux": {
-      "corge": "grault",
-      "thud": "fred"
-    },
-    "boolean": {
-       "updated": true,
-       "paid": false
-    },
-    "unknown": null
-  }
+{
+  "foo": ["bar", "baz"],
+  "": 0,
+  "a/b": 1,
+  "c%d": 2,
+  "e^f": 3,
+  "g|h": 4,
+  "i\\j": 5,
+  "k\"l": 6,
+  " ": 7,
+  "m~1n": 8,
+  "qux": {
+    "corge": "grault",
+    "thud": "fred"
+  },
+  "boolean": {
+     "updated": true,
+     "paid": false
+  },
+  "unknown": null
+}
 JSON_OBJECT
 
-note explain $json_object;
+note $json_object;
 
 my $perl_hashref = $json_pp->decode( $json_object );
 
