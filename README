@@ -1,33 +1,19 @@
 NAME
 
-JSON::Pointer::Marpa - Marpa::R2 based JSON Pointer RFC 6901 implementation.
+JSON::Pointer::Marpa - Marpa::R2 based JSON Pointer RFC6901 implementation
 
 INSTALLATION
 
-To install this module manually, run the following commands:
+To install this module, use your preferred CPAN client. If this is cpanm then
+run the command
 
-  perl Makefile.PL
-  make
-  make test
-  make install
+  cpanm JSON::Pointer::Marpa
 
 DOCUMENTATION
 
-After the installation, you can find further documentation using the command:
+After the installation, you can find further documentation using the command
 
   perldoc JSON::Pointer::Marpa
-
-MAINTENANCE
-
-To maintain this module, run the following commands:
-
-  perl Makefile.PL
-  make
-  cover -delete
-  HARNESS_PERL_SWITCHES=-MDevel::Cover make test
-  cover -report vim
-  make RELEASE_TESTING=1 disttest
-  make dist
 
 COPYRIGHT AND LICENSE
 

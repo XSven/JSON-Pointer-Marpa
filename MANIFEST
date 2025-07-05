@@ -1,5 +1,6 @@
 .perlcriticrc
 Changes
+CONTRIBUTING
 cpanfile
 lib/JSON/Pointer/Marpa.pm
 lib/JSON/Pointer/Marpa.pod

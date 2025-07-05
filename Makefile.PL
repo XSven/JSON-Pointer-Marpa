@@ -13,8 +13,8 @@ BEGIN {
 use ExtUtils::MakeMaker::CPANfile;    # do not supply an empty list because import() has to be called
 
 my @main_module_namespace = qw( JSON Pointer Marpa );
-my $version               = '1.0.2';
-my $release_status        = 'stable';                   # transition: unstable => testing => stable
+my $version               = '1.0.3';
+my $release_status        = 'unstable';                 # transition: unstable => testing => stable
 
 my $distname            = join '-',  @main_module_namespace;
 my $main_module         = join '::', @main_module_namespace;
