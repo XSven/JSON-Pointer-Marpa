@@ -1,8 +1,16 @@
 use strict;
 use warnings;
 
+use File::Spec::Functions qw( catfile rel2abs );
+
+BEGIN {
+  # pass cpm's default --local-lib-contained DIR to the required MY module using
+  # the localized first element of @ARGV
+  local $ARGV[ 0 ] = 'local';
+  require &rel2abs( catfile( qw( maint MY.pm ) ) )
+}
+
 use ExtUtils::MakeMaker::CPANfile;    # do not supply an empty list because import() has to be called
-use File::Spec::Functions qw( catfile );
 
 my @main_module_namespace = qw( JSON Pointer Marpa );
 my $version               = '1.0.2';

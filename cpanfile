@@ -1,39 +1,22 @@
 use strict;
 use warnings;
 
-on 'configure' => sub {
-  requires 'Config'                        => '0';
-  requires 'ExtUtils::MakeMaker'           => '6.76';     # Offers the RECURSIVE_TEST_FILES feature
-  requires 'ExtUtils::MakeMaker::CPANfile' => '0';
-  requires 'File::Spec::Functions'         => '0';
-  requires 'strict'                        => '0';
-  requires 'version'                       => '0.9915';
-  requires 'warnings'                      => '0'
-};
+use File::Spec::Functions qw( catfile rel2abs );
 
-on 'runtime' => sub {
+# load standard dependencies file (do not change this file!)
+require &rel2abs( catfile( qw( maint cpanfile ) ) );
+
+on configure => sub { };
+
+on runtime => sub {
   requires 'Marpa::R2'   => '0';
   requires 'URI::Escape' => '0';
   requires 'constant'    => '0';
-  requires 'strict'      => '0';
-  requires 'subs'        => '0';
-  requires 'version'     => '0.9915';
-  requires 'warnings'    => '0'
+  requires 'subs'        => '0'
 };
 
-on 'test' => sub {
-  requires 'JSON::PP'      => '0';
-  requires 'Test::Fatal'   => '0';
-  requires 'Test::Harness' => '3.50';
-  requires 'Test::Needs'   => '0';
-  requires 'Test::More' => '1.001005'    # Subtests accept args
+on test => sub {
+  requires 'JSON::PP' => '0'
 };
 
-on develop => sub {
-  requires 'Devel::Cover'       => '1.33';       # Fix cover -test with Build.PL
-  requires 'Perl::Tidy'         => '20250616';
-  requires 'Template'           => '0';
-  requires 'Test::Needs'        => '0';
-  requires 'Test::Perl::Critic' => '0';
-  requires 'Test::Pod'          => '1.26'
-}
+on develop => sub { }
