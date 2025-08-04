@@ -4,34 +4,35 @@ use warnings;
 use File::Spec::Functions qw( catfile rel2abs );
 
 BEGIN {
-  # pass cpm's default --local-lib-contained DIR to the required MY module using
-  # the localized first element of @ARGV
-  local $ARGV[ 0 ] = 'local';
   require &rel2abs( catfile( qw( maint MY.pm ) ) )
 }
 
 use ExtUtils::MakeMaker::CPANfile;    # do not supply an empty list because import() has to be called
 
 my @main_module_namespace = qw( JSON Pointer Marpa );
-my $version               = '1.0.3';
 my $release_status        = 'unstable';                 # transition: unstable => testing => stable
 
 my $distname            = join '-',  @main_module_namespace;
 my $main_module         = join '::', @main_module_namespace;
 my $main_module_file    = catfile( @main_module_namespace ) . '.pm';
 my $main_module_podfile = catfile( @main_module_namespace ) . '.pod';
-my %att                 = (
+# we are not using
+# VERSION_FROM  => catfile( 'lib', $main_module_file )
+# because we have to set the main module version in META_MERGE/provides too
+my $main_module_version = MM->parse_version( catfile( 'lib', $main_module_file ) );
+
+my %att = (
   NAME          => $main_module,
   AUTHOR        => 'Sven Willenbuecher <sven.willenbuecher@gmx.de>',
-  VERSION_FROM  => catfile( 'lib', $main_module_file ),
+  VERSION       => $main_module_version,
   ABSTRACT_FROM => catfile( 'lib', $main_module_podfile ),
   # another valid license string is "restricted"
   # https://metacpan.org/pod/CPAN::Meta::Spec#license
   LICENSE          => 'perl_5',
-  MIN_PERL_VERSION => '5.14.4',
+  MIN_PERL_VERSION => '5.10.1',
   # safe naming of custom arguments passed to Makefile.PL
   # https://github.com/Perl-Toolchain-Gang/ExtUtils-MakeMaker/issues/470
-  DISTVNAME => "$distname-$version"
+  DISTVNAME => "$distname-$main_module_version"
     . ( $release_status ne 'stable' ? '-TRIAL1' : '' ),    # related to the below release_status metadata field
   META_MERGE => {
     'meta-spec'    => { version => 2 },
@@ -39,10 +40,10 @@ my %att                 = (
     provides       => {
       $main_module => {
         file    => catfile( 'lib', $main_module_file ),
-        version => $version
+        version => $main_module_version
       },
       join( '::', $main_module, 'Semantics' ) => {
-        file => 'lib/JSON/Pointer/Marpa/Semantics.pm',
+        file => catfile( 'lib', @main_module_namespace, 'Semantics' ) . '.pm'
       }
     },
     resources => {

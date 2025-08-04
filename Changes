@@ -1,9 +1,11 @@
 Release history for JSON-Pointer-Marpa
 
-1.0.3    2025-07-05
-         - enhance ExtUtils::MakeMaker using local MY module
-         - add CONTRIBUTING file
-         - improve documentation
+v1.0.3    2025-08-04
+          - add "v" prefix to dotted-decimal VERSION
+          - use VERSION instead of VERSION_FROM attribute
+          - enhance ExtUtils::MakeMaker using local MY module
+          - add CONTRIBUTING file
+          - improve documentation
 
 1.0.2    2025-07-01
          - fix runtime dependencies setup

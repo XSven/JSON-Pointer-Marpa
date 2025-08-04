@@ -11,7 +11,8 @@ use File::Basename        qw( basename );
 use File::Spec::Functions qw( catdir catfile rel2abs );
 use Module::Loaded        qw( is_loaded );
 
-my ( $local_lib_root, $local_bin, $local_lib_rel, $local_lib ) = _local $ARGV[ 0 ];
+# use cpm's default --local-lib-contained DIR
+my ( $local_lib_root, $local_bin, $local_lib_rel, $local_lib ) = _local 'local';
 my $t_lib = rel2abs( catdir( qw( t lib ) ) );
 
 # need to prepend local library path to locate ExtUtils::MakeMaker::CPANfile
@@ -119,6 +120,14 @@ cover:
 	\$(NOECHO) \$(FULLPERLRUN) -I$local_lib $cover -delete
 	\$(NOECHO) HARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test
 	\$(NOECHO) \$(FULLPERLRUN) -I$local_lib $cover -select_re '\\A(?:blib|maint)/.*\\.pm|\\Amaint/.*\\.pl' -coverage statement -coverage branch -coverage condition -coverage subroutine -report vim
+MAKE_FRAGMENT
+
+  my $bump_version = _which 'perl-bump-version';
+  $make_fragment .= <<"MAKE_FRAGMENT" if defined $bump_version and defined $local_lib;
+
+.PHONY: versionbump
+versionbump:
+	\$(NOECHO) \$(FULLPERLRUN) -I$local_lib $bump_version
 MAKE_FRAGMENT
 
   my $podman = _which 'podman';

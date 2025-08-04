@@ -3,10 +3,7 @@ use warnings;
 
 package JSON::Pointer::Marpa;
 
-# Keeping the following $VERSION declaration on a single line is important.
-#<<<
-use version 0.9915; our $VERSION = version->declare( '1.0.3' );
-#>>>
+our $VERSION = 'v1.0.3';
 
 use Marpa::R2   ();
 use URI::Escape qw( uri_unescape );
