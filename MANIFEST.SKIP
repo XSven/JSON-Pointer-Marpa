@@ -60,9 +60,6 @@
 \bcover_db\b
 \bcovered\b
 
-# Avoid Perl::Tidy files.
-\B\.perltidyrc\b
-
 # Avoid prove files.
 \B\.prove$
 

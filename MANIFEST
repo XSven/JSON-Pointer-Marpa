@@ -1,3 +1,5 @@
+.perlcriticrc
+.perltidyrc
 Changes
 cpanfile
 lib/JSON/Pointer/Marpa.pm
