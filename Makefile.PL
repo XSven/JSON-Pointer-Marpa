@@ -1,13 +1,8 @@
 use strict;
 use warnings;
 
-use File::Spec::Functions qw( catfile rel2abs );
-
-BEGIN {
-  require &rel2abs( catfile( qw( maint MY.pm ) ) )
-}
-
 use ExtUtils::MakeMaker::CPANfile;    # do not supply an empty list because import() has to be called
+use File::Spec::Functions qw( catfile );
 
 my @main_module_namespace = qw( JSON Pointer Marpa );
 my $release_status        = 'unstable';                 # transition: unstable => testing => stable
@@ -58,11 +53,10 @@ my %att = (
     }
   },
   # check ExtUtils::MakeMaker Changes
-  NORECURS  => 1,
-  clean     => { FILES                => "$distname* cover_db" },
-  dist      => { TARFLAGS             => 'cf', COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
-  realclean => { FILES                => 'local' },
-  test      => { RECURSIVE_TEST_FILES => 1 }
+  NORECURS => 1,
+  clean    => { FILES                => "$distname*" },
+  dist     => { TARFLAGS             => 'cf', COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
+  test     => { RECURSIVE_TEST_FILES => 1 }
 );
 
 # Makefile.PL as a modulino
