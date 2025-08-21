@@ -53,10 +53,11 @@ my %att = (
     }
   },
   # check ExtUtils::MakeMaker Changes
-  NORECURS => 1,
-  clean    => { FILES                => "$distname*" },
-  dist     => { TARFLAGS             => 'cf', COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
-  test     => { RECURSIVE_TEST_FILES => 1 }
+  NORECURS  => 1,
+  clean     => { FILES                => "$distname*" },
+  dist      => { TARFLAGS             => 'cf', COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
+  realclean => { FILES                => 'local' },
+  test      => { RECURSIVE_TEST_FILES => 1 }
 );
 
 # Makefile.PL as a modulino
