@@ -1,9 +1,12 @@
+--backup-and-modify-in-place
+--backup-file-extension='/'
 # "tightness" means the closeness with which pairs of enclosing tokens,
 # such as parentheses, contain the quantities within.
 --paren-tightness 0
 --square-bracket-tightness 0
 --brace-tightness 0
---maximum-line-length 120
+--variable-maximum-line-length
+--maximum-line-length 72
 --indent-columns 2
 --continuation-indentation 2
 --cuddled-else
