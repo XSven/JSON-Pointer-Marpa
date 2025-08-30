@@ -61,11 +61,11 @@ my $grammar = Marpa::R2::Scanless::G->new(
 sub get {
   my ( undef, $json_document, $json_pointer ) = @_;
 
-# FIXME: properly differentiate between the 2 different representations
-# (RFC6901 section 5 and section 6) of a JSON pointer. uri_unescape() has
-# to be called only(!) for the URI fragment identifier representation type
-# (section 6). Backslash unescaping has to be done for the JSON string
-# representation (section 5) type.
+  # FIXME: properly differentiate between the 2 different representations
+  # (RFC6901 section 5 and section 6) of a JSON pointer. uri_unescape() has
+  # to be called only(!) for the URI fragment identifier representation type
+  # (section 6). Backslash unescaping has to be done for the JSON string
+  # representation (section 5) type.
   $json_pointer = uri_unescape( $json_pointer )
     if $json_pointer =~ s/\A#//; ## no critic (RequireExtendedFormatting)
 
@@ -78,10 +78,7 @@ sub get {
   );
   $recognizer->read( \$json_pointer );
 
-  ${
-    $recognizer->value(
-      JSON::Pointer::Marpa::Semantics->new( $json_document )
-    )
+  ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_document ) )
   }
 }
 

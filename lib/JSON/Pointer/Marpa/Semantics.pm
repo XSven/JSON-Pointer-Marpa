@@ -98,8 +98,7 @@ sub _member_exists ( $$ ) {
   exists $crv->{ $member }
     ? $crv->{ $member }
     : Marpa::R2::Context::bail(
-"JSON object has been accessed with a member '$member' that does not exist!"
-    )
+    "JSON object has been accessed with a member '$member' that does not exist!" )
 }
 
 1

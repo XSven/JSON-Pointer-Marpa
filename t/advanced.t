@@ -53,7 +53,7 @@ like exception {
   $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6' )
 },
 qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
-'array index out of bounds (former implementation has returned undef)';
+  'array index out of bounds (former implementation has returned undef)';
 
 # "get" (encoded)
 is $class->get( { '♥' => [ 0, 1 ] }, '#/%E2%99%A5/0' ), 0,
@@ -65,9 +65,9 @@ is $class->get( [ { 'foob ar' => 'foo' } ], '#/0/foob%20ar' ), 'foo',
 like exception {
   $class->get( [ { 'foo/bar' => 'bar' } ], '#/0/foo%2Fbar' )
 },
-qr/JSON object has been accessed with a member .* that does not exist!\n\z/
+  qr/JSON object has been accessed with a member .* that does not exist!\n\z/
   , ##
-'object member does not exist (former implementation has returned undef)';
+  'object member does not exist (former implementation has returned undef)';
 is $class->get( [ { 'foo/bar' => 'bar' } ], '/0/foo~1bar' ), 'bar',
   "'/0/foo~1bar' is 'bar'";
 is $class->get( [ { 'foo/bar/baz' => 'yada' } ], '/0/foo~1bar~1baz' ),

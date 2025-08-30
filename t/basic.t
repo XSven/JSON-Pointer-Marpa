@@ -5,8 +5,7 @@ use warnings;
 
 use Test::More
   import => [
-  qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok )
-  ],
+  qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ],
   tests => 5;
 use Test::Fatal qw( exception );
 
@@ -31,18 +30,16 @@ subtest 'JSON to Perl decode' => sub {
   is_deeply $json_pp->decode( $json_document ),
     { name => 'Alice', age => 25 }, 'object';
   $json_document = '["bar", "baz"]';
-  is_deeply $json_pp->decode( $json_document ), [ qw( bar baz ) ],
-    'array';
+  is_deeply $json_pp->decode( $json_document ), [ qw( bar baz ) ], 'array';
   $json_document = 'null';
   is $json_pp->decode( $json_document ), undef, 'null';
   $json_document = 'true';
-# https://metacpan.org/dist/Types-Bool/view/lib/Types/Bool.pod#DESCRIPTION
+  # https://metacpan.org/dist/Types-Bool/view/lib/Types/Bool.pod#DESCRIPTION
   isa_ok my $perl_document = $json_pp->decode( $json_document ),
     'JSON::PP::Boolean';
   ok $perl_document, 'true';
   $json_document = 'false';
-  isa_ok $perl_document = $json_pp->decode( $json_document ),
-    'JSON::PP::Boolean';
+  isa_ok $perl_document = $json_pp->decode( $json_document ), 'JSON::PP::Boolean';
   ok not( $perl_document ), 'false' ## no critic (RequireTestLabels)
 };
 
@@ -94,12 +91,12 @@ qr/JSON array has been accessed with an index \d+ that is greater than or equal 
     'array index out of bounds';
 
   like exception { $class->get( $perl_hashref, '/47' ) },
-qr/JSON object has been accessed with a member .* that does not exist!\n\z/
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/
     , ##
     'object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/qux/' ) },
-qr/JSON object has been accessed with a member .* that does not exist!\n\z/
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/
     , ##
     'empty string object member does not exist';
 
@@ -108,12 +105,11 @@ qr/JSON object has been accessed with a member .* that does not exist!\n\z/
     'not implemented'
 };
 
-subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' =>
-  sub {
+subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
   plan tests => 20;
 
-  my $json_string = '""'
-    ;   # JSON string representation of a JSON pointer (RFC6901 section 5)
+  my $json_string =
+    '""';    # JSON string representation of a JSON pointer (RFC6901 section 5)
   my $perl_string = $json_pp->decode( $json_string );
   note 'JSON string: ', $json_string, ' PERL string: ', $perl_string;
   is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref,
@@ -201,7 +197,7 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' =>
   $perl_string = '/m~01n';
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'm~1n' }, $perl_string
-  };
+};
 
 subtest 'Point to JSON primitives' => sub {
   plan tests => 5;
