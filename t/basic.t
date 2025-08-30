@@ -6,7 +6,7 @@ use warnings;
 use Test::More
   import => [
   qw( BAIL_OUT explain is isa_ok is_deeply like note ok plan subtest use_ok ) ],
-  tests => 5;
+  tests => 6;
 use Test::Fatal qw( exception );
 
 use JSON::PP    ();
@@ -105,11 +105,11 @@ qr/JSON array has been accessed with an index \d+ that is greater than or equal 
     'not implemented'
 };
 
-subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
-  plan tests => 20;
+subtest 'JSON Pointer RFC6901 examples from section 5' => sub {
+  plan tests => 14;
 
-  my $json_string =
-    '""';    # JSON string representation of a JSON pointer (RFC6901 section 5)
+  # JSON string representation of a JSON pointer (RFC6901 section 5)
+  my $json_string = '""';
   my $perl_string = $json_pp->decode( $json_string );
   note 'JSON string: ', $json_string, ' PERL string: ', $perl_string;
   is_deeply $class->get( $perl_hashref, $perl_string ), $perl_hashref,
@@ -146,24 +146,14 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
     $perl_hashref->{ 'c%d' }, $perl_string;
   is uri_unescape( $perl_string ), $perl_string,
     "$perl_string (nothing to unescape)";
-  $perl_string = '#/c%25d'
-    ; # URI fragment identifier representation of a JSON pointer (RFC6901 section 6)
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ 'c%d' }, $perl_string;
 
   $json_string = '"/e^f"';
   $perl_string = $json_pp->decode( $json_string );
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'e^f' }, $perl_string;
-  $perl_string = '#/e%5Ef';
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ 'e^f' }, $perl_string;
 
   $json_string = '"/g|h"';
   $perl_string = $json_pp->decode( $json_string );
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ 'g|h' }, $perl_string;
-  $perl_string = '#/g%7Ch';
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'g|h' }, $perl_string;
 
@@ -173,16 +163,10 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
   note 'JSON string: ', $json_string, ' PERL string: ', $perl_string;
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'i\j' }, $perl_string;
-  $perl_string = '#/i%5Cj';
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ 'i\j' }, $perl_string;
 
   $json_string = '"/k\"l"';
   $perl_string = $json_pp->decode( $json_string );
   note 'JSON string: ', $json_string, ' PERL string: ', $perl_string;
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ 'k"l' }, $perl_string;
-  $perl_string = '#/k%22l';
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'k"l' }, $perl_string;
 
@@ -190,13 +174,39 @@ subtest 'JSON Pointer RFC6901 examples from section 5 and section 6' => sub {
   $perl_string = $json_pp->decode( $json_string );
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ ' ' }, $perl_string;
-  $perl_string = '#/%20';
-  is_deeply $class->get( $perl_hashref, $perl_string ),
-    $perl_hashref->{ ' ' }, $perl_string;
 
   $perl_string = '/m~01n';
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'm~1n' }, $perl_string
+};
+
+subtest 'JSON Pointer RFC6901 examples from section 6' => sub {
+  plan tests => 6;
+
+  # URI fragment identifier representation of a JSON pointer (RFC6901 section 6)
+  my $perl_string = '#/c%25d';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ 'c%d' }, $perl_string;
+
+  $perl_string = '#/e%5Ef';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ 'e^f' }, $perl_string;
+
+  $perl_string = '#/g%7Ch';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ 'g|h' }, $perl_string;
+
+  $perl_string = '#/i%5Cj';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ 'i\j' }, $perl_string;
+
+  $perl_string = '#/k%22l';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ 'k"l' }, $perl_string;
+
+  $perl_string = '#/%20';
+  is_deeply $class->get( $perl_hashref, $perl_string ),
+    $perl_hashref->{ ' ' }, $perl_string;
 };
 
 subtest 'Point to JSON primitives' => sub {
