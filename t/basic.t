@@ -91,13 +91,11 @@ qr/JSON array has been accessed with an index \d+ that is greater than or equal 
     'array index out of bounds';
 
   like exception { $class->get( $perl_hashref, '/47' ) },
-    qr/JSON object has been accessed with a member .* that does not exist!\n\z/
-    , ##
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
     'object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/qux/' ) },
-    qr/JSON object has been accessed with a member .* that does not exist!\n\z/
-    , ##
+    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
     'empty string object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/foo/-' ) },
@@ -175,7 +173,10 @@ subtest 'JSON Pointer RFC6901 examples from section 5' => sub {
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ ' ' }, $perl_string;
 
-  $perl_string = '/m~01n';
+  # '~' will be encoded as '~0'
+  $json_string = '"/m~01n"';
+  $perl_string = $json_pp->decode( $json_string );
+  # the string '~01' correctly becomes '~1' after transformation
   is_deeply $class->get( $perl_hashref, $perl_string ),
     $perl_hashref->{ 'm~1n' }, $perl_string
 };
