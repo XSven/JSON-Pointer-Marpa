@@ -1,8 +1,10 @@
 Release history for JSON-Pointer-Marpa
 
 v1.0.3    2025-08-05
-          - add "v" prefix to dotted-decimal VERSION
           - use VERSION instead of VERSION_FROM attribute
+          - add "v" prefix to dotted-decimal VERSION
+          - set VERSION using its fully qualified name instead of its our
+            made alias
           - apply improved perltidy configuration
           - improve documentation
 

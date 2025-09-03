@@ -3,7 +3,7 @@ use warnings;
 
 package JSON::Pointer::Marpa;
 
-our $VERSION = 'v1.0.3';
+$JSON::Pointer::Marpa::VERSION = 'v1.0.3';
 
 use Marpa::R2   ();
 use URI::Escape qw( uri_unescape );
