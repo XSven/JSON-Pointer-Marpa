@@ -1,5 +1,8 @@
 Release history for JSON-Pointer-Marpa
 
+1.0.4    2025-09-07
+         - apply perlcritic feedback
+
 1.0.3    2025-09-05
          - use VERSION instead of VERSION_FROM attribute
          - add "v" prefix to dotted-decimal VERSION

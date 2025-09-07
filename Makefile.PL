@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker::CPANfile
 use File::Spec::Functions qw( catfile );
 
 my @main_module_namespace = qw( JSON Pointer Marpa );
-my $release_status = 'stable';    # transition: unstable => testing => stable
+my $release_status = 'unstable';    # transition: unstable => testing => stable
 
 my $distname            = join '-',  @main_module_namespace;
 my $main_module         = join '::', @main_module_namespace;
@@ -66,7 +66,7 @@ my %att = (
 # Makefile.PL as a modulino
 # https://www.masteringperl.org/2015/01/makefile-pl-as-a-modulino/
 if ( caller() ) {
-  no warnings qw( redefine );
+  no warnings qw( redefine ); ## no critic (ProhibitNoWarnings)
   # redefine ExtUtils::MakeMaker::WriteMakefile() to echo its atributes
   *ExtUtils::MakeMaker::WriteMakefile = sub {
     +{ @_ }    # \%att
