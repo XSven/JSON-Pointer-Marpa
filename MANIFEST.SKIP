@@ -60,8 +60,14 @@
 \bcover_db\b
 \bcovered\b
 
+# Avoid perlcritic files.
+\B\.perlcriticrc$
+
+# Avoid perltidy files.
+\B\.perltidyrc$
+
 # Avoid prove files.
-\B\.prove$
+\B\.proverc$
 
 # Avoid MYMETA files.
 ^MYMETA\.
