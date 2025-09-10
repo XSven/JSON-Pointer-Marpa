@@ -1,8 +1,9 @@
 Release history for JSON-Pointer-Marpa
 
-1.0.4    2025-09-07
+1.0.4    2025-09-10
          - apply perlcritic feedback
          - remove rc files from MANIFEST
+         - change protocol of GitHub cloning url
 
 1.0.3    2025-09-05
          - use VERSION instead of VERSION_FROM attribute

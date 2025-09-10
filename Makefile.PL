@@ -47,7 +47,7 @@ my %att = (
     resources => {
       repository => {
         type => 'git',
-        url  => "git://github.com/XSven/$distname.git",
+        url  => "https://github.com/XSven/$distname.git",
         web  => "https://github.com/XSven/$distname"
       },
       bugtracker => {
