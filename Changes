@@ -1,26 +1,28 @@
 Release history for JSON-Pointer-Marpa
 
-1.0.4    2025-09-10
-         - apply perlcritic feedback
-         - remove rc files from MANIFEST
-         - change protocol of GitHub cloning url
+1.0.4    2025-11-02
+         - Apply perlcritic feedback
+         - Remove rc files from MANIFEST
+         - Change protocol of GitHub cloning url
+         - Change MIN_PERL_VERSION format
+         - Add perl min version check to each module
 
 1.0.3    2025-09-05
-         - use VERSION instead of VERSION_FROM attribute
-         - add "v" prefix to dotted-decimal VERSION
-         - set VERSION using its fully qualified name instead of its our
+         - Use VERSION instead of VERSION_FROM attribute
+         - Add "v" prefix to dotted-decimal VERSION
+         - Set VERSION using its fully qualified name instead of its our
            made alias
-         - apply improved perltidy configuration
-         - improve documentation
+         - Apply improved perltidy configuration
+         - Improve documentation
 
 1.0.2    2025-07-01
-         - fix runtime dependencies setup
-         - decrease perl min version requirement
+         - Fix runtime dependencies setup
+         - Decrease perl min version requirement
 
 1.0.1    2025-06-29
-         - fix error handling [RFC6901/7. Error Handling]
-         - explicitly enable JSON::PP allow_nonref option
-         - fix initial release date in changes file
+         - Fix error handling [RFC6901/7. Error Handling]
+         - Explicitly enable JSON::PP allow_nonref option
+         - Fix initial release date in changes file
 
 1.0.0    2025-05-25
-         - initial release
+         - Initial release
