@@ -6,7 +6,7 @@
 --square-bracket-tightness 0
 --brace-tightness 0
 --variable-maximum-line-length
---maximum-line-length 80
+--maximum-line-length 120
 --indent-columns 2
 --continuation-indentation 2
 --cuddled-else

@@ -80,8 +80,7 @@ sub get {
   );
   $recognizer->read( \$json_pointer );
 
-  ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_document ) )
-  }
+  ${ $recognizer->value( JSON::Pointer::Marpa::Semantics->new( $json_document ) ) }
 }
 
 1
