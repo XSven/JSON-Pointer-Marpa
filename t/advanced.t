@@ -39,11 +39,11 @@ is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/1' ), undef, "'
 is $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/2' ), 3,     "'/foo/bar/2' is '3'";
 like exception {
   $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/1/baz' )
-}, qr/Currently referenced type '' isn't a JSON object!\n\z/, 'undef is referenced with a non-numeric token';
+}, qr/Currently referenced type '' isn't a JSON object\n\z/, 'undef is referenced with a non-numeric token';
 like exception {
   $class->get( { foo => { bar => [ 0, undef, 3 ] } }, '/foo/bar/6' )
 },
-  qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
+  qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array\n\z/,
   'array index out of bounds (former implementation has returned undef)';
 
 # "get" (encoded)
@@ -52,7 +52,7 @@ is $class->get( [ { '^foob ar' => 'foo' } ], '/0/^foob ar' ),   'foo', "'/0/^foo
 is $class->get( [ { 'foob ar'  => 'foo' } ], '#/0/foob%20ar' ), 'foo', "'#/0/foob%20ar' is 'foo'";
 like exception {
   $class->get( [ { 'foo/bar' => 'bar' } ], '#/0/foo%2Fbar' )
-}, qr/JSON object has been accessed with a member .* that does not exist!\n\z/, ##
+}, qr/JSON object has been accessed with a member .* that does not exist\n\z/, ##
   'object member does not exist (former implementation has returned undef)';
 is $class->get( [ { 'foo/bar'     => 'bar' } ],  '/0/foo~1bar' ),            'bar',  "'/0/foo~1bar' is 'bar'";
 is $class->get( [ { 'foo/bar/baz' => 'yada' } ], '/0/foo~1bar~1baz' ),       'yada', "'/0/foo~1bar~1baz' is 'yada'";

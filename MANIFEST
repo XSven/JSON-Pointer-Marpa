@@ -9,3 +9,4 @@ MANIFEST			This list of files
 README
 t/advanced.t
 t/basic.t
+t/semantics_api.t

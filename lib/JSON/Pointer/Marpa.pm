@@ -11,6 +11,10 @@ use Marpa::R2   ();
 use URI::Escape qw( uri_unescape );
 
 use JSON::Pointer::Marpa::Semantics ();
+{
+  no warnings 'redefine'; ## no critic ( ProhibitNoWarnings )
+  *JSON::Pointer::Marpa::Semantics::bail = \&Marpa::R2::Context::bail
+}
 
 my $dsl = <<'END_OF_DSL';
 lexeme default = latm  => 1

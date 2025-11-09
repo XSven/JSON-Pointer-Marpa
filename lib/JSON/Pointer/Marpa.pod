@@ -29,15 +29,15 @@ error conditions is raised:
 
 =over 2
 
-=item * Handling of '-' array index isn't implemented!"
+=item * Handling of '-' array index isn't implemented
 
-=item * Currently referenced type '%s' isn't a JSON structured type (array or object)!
+=item * Currently referenced type '%s' isn't a JSON structured type (array or object)
 
-=item * Currently referenced type '%s' isn't a JSON object!"
+=item * Currently referenced type '%s' isn't a JSON object
 
-=item * JSON array has been accessed with an index %d that is greater than or equal to the size of the array!
+=item * JSON array has been accessed with an index %d that is greater than or equal to the size of the array
 
-=item * JSON object has been accessed with a member '%s' that does not exist!
+=item * JSON object has been accessed with a member '%s' that does not exist
 
 =back
 

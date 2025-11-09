@@ -76,27 +76,27 @@ subtest 'Error handling described in section 7' => sub {
   plan tests => 6;
 
   like exception { $class->get( $perl_hashref, '/foo/string' ) },
-    qr/Currently referenced type 'ARRAY' isn't a JSON object!\n\z/,
+    qr/Currently referenced type 'ARRAY' isn't a JSON object\n\z/,
     'array is referenced with a non-numeric token that not even refers to an object member';
 
   like exception { $class->get( $perl_hashref, '/a~1b/666' ) },
-    qr/Currently referenced type '' isn't a JSON structured type \(array or object\)!\n\z/,
+    qr/Currently referenced type '' isn't a JSON structured type \(array or object\)\n\z/,
     'value is referenced with a numeric token';
 
   like exception { $class->get( $perl_hashref, '/foo/2' ) },
-    qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array!\n\z/,
+    qr/JSON array has been accessed with an index \d+ that is greater than or equal to the size of the array\n\z/,
     'array index out of bounds';
 
   like exception { $class->get( $perl_hashref, '/47' ) },
-    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
+    qr/JSON object has been accessed with a member .* that does not exist\n\z/,
     'object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/qux/' ) },
-    qr/JSON object has been accessed with a member .* that does not exist!\n\z/,
+    qr/JSON object has been accessed with a member .* that does not exist\n\z/,
     'empty string object member does not exist';
 
   like exception { $class->get( $perl_hashref, '/foo/-' ) },
-    qr/Handling of '-' array index isn't implemented!\n\z/,
+    qr/Handling of '-' array index isn't implemented\n\z/,
     'not implemented'
 };
 
